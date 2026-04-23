@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S'inscrire — DevHubX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --purple: #7c3aed;
+      --purple-light: #a855f7;
+      --purple-dim: rgba(124,58,237,0.18);
+      --bg: #080810;
+      --bg2: #0d0d1a;
+      --card: #111122;
+      --text: #f0f0ff;
+      --muted: #8888aa;
+      --border: rgba(124,58,237,0.25);
+      --success: #22c55e;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(8,8,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+
+    .logo { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; }
+    .logo-text { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); }
+    .logo-text span { color: var(--purple-light); }
+
+    nav { display: flex; align-items: center; gap: 0.25rem; }
+    nav a {
+      color: var(--muted); text-decoration: none; font-size: 0.92rem;
+      font-weight: 500; padding: 0.4rem 0.9rem; border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    nav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    nav a.active { color: var(--purple-light); border-bottom: 2px solid var(--purple-light); border-radius: 0; }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bg-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 50% 60% at 20% 30%, rgba(124,58,237,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 70%, rgba(168,85,247,0.08) 0%, transparent 60%);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem 2.2rem;
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+    .card-title span { color: var(--purple-light); }
+    .card-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.8rem; }
+
+    /* Social buttons */
+    .social-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.65rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .social-btn:hover { background: rgba(124,58,237,0.12); border-color: var(--purple-light); transform: translateY(-1px); }
+    .social-btn svg { flex-shrink: 0; }
+
+    .shopify-btn { grid-column: span 2; }
+
+    .divider {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.4rem; color: var(--muted); font-size: 0.82rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; font-size: 0.83rem; font-weight: 500; color: var(--muted); margin-bottom: 0.4rem; }
+
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+    input:focus { border-color: var(--purple-light); background: rgba(124,58,237,0.06); }
+    input.valid   { border-color: var(--success); }
+    input.invalid { border-color: var(--error); }
+
+    .pw-wrap { position: relative; }
+    .pw-toggle {
+      position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--muted);
+      display: flex; align-items: center;
+    }
+
+    /* Password strength */
+    .pw-strength { margin-top: 0.5rem; }
+    .pw-bars { display: flex; gap: 4px; margin-bottom: 0.3rem; }
+    .pw-bar {
+      flex: 1; height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.08);
+      transition: background 0.3s;
+    }
+    .pw-bar.weak   { background: var(--error); }
+    .pw-bar.medium { background: var(--warning); }
+    .pw-bar.strong { background: var(--success); }
+
+    .pw-rules { display: flex; flex-direction: column; gap: 3px; margin-top: 0.5rem; }
+    .rule {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; color: var(--muted);
+      transition: color 0.2s;
+    }
+    .rule.ok { color: var(--success); }
+    .rule.fail { color: var(--error); }
+    .rule-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor; flex-shrink: 0;
+    }
+
+    .field-msg {
+      font-size: 0.78rem; margin-top: 0.3rem; min-height: 1rem;
+      transition: color 0.2s;
+    }
+    .field-msg.ok   { color: var(--success); }
+    .field-msg.err  { color: var(--error); }
+    .field-msg.warn { color: var(--warning); }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 0.85rem;
+      font-size: 0.97rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 1.2rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { background: #6d28d9; transform: translateY(-1px); }
+    .btn-submit:disabled { background: rgba(124,58,237,0.3); cursor: not-allowed; transform: none; }
+
+    .login-link {
+      text-align: center; margin-top: 1.2rem;
+      font-size: 0.85rem; color: var(--muted);
+    }
+    .login-link a { color: var(--purple-light); text-decoration: none; font-weight: 500; }
+    .login-link a:hover { text-decoration: underline; }
+
+    /* ── CAPTCHA MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 420px;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+    .modal-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+    .captcha-question {
+      background: rgba(124,58,237,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+
+    .captcha-img-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 1rem 0;
+    }
+
+    .captcha-img {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.15s;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      user-select: none;
+    }
+    .captcha-img:hover { border-color: var(--purple-light); transform: scale(1.03); }
+    .captcha-img.selected { border-color: var(--purple-light); background: rgba(124,58,237,0.15); }
+    .captcha-img.correct  { border-color: var(--success); background: rgba(34,197,94,0.1); }
+    .captcha-img.wrong    { border-color: var(--error);   background: rgba(239,68,68,0.1); }
+
+    .captcha-label { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .captcha-hint  { font-size: 0.8rem; color: var(--muted); }
+
+    .captcha-feedback {
+      text-align: center; font-size: 0.85rem; min-height: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .captcha-feedback.ok  { color: var(--success); }
+    .captcha-feedback.err { color: var(--error); }
+
+    .modal-actions { display: flex; gap: 0.75rem; }
+    .btn-cancel {
+      flex: 1; padding: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); border-radius: 10px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn-cancel:hover { background: rgba(255,255,255,0.04); }
+
+    .btn-confirm {
+      flex: 2; padding: 0.75rem;
+      background: var(--purple); border: none;
+      color: #fff; border-radius: 10px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn-confirm:hover { background: #6d28d9; }
+    .btn-confirm:disabled { background: rgba(124,58,237,0.3); cursor: not-allowed; }
+
+    /* Success screen */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 1rem 0;
+    }
+    .success-icon {
+      width: 64px; height: 64px;
+      background: rgba(34,197,94,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    footer {
+      text-align: center; padding: 1.5rem;
+      color: #444466; font-size: 0.82rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 1rem 1.25rem; }
+      nav { display: none; }
+      .card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">
+    <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+      <rect width="38" height="38" rx="8" fill="rgba(124,58,237,0.15)"/>
+      <text x="5" y="27" font-family="Syne,sans-serif" font-weight="800" font-size="18" fill="#a855f7">D</text>
+      <text x="20" y="27" font-family="Syne,sans-serif" font-weight="800" font-size="13" fill="#ffffff">H</text>
+    </svg>
+    <span class="logo-text">DevHub<span>X</span></span>
+  </a>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="#">À propos</a>
+    <a href="#">Services</a>
+    <a href="#">Projets</a>
+    <a href="register.html" class="active">S'inscrire</a>
+    <a href="login.html">Connexion</a>
+  </nav>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div class="bg-glow"></div>
+
+  <div class="card" id="registerCard">
+    <h1 class="card-title">Créer un compte <span>DevHub</span></h1>
+    <p class="card-sub">Rejoins la marketplace des développeurs</p>
+
+    <!-- Social logins -->
+    <div class="social-grid">
+      <button class="social-btn" onclick="socialLogin('Google')">
+        <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google
+      </button>
+      <button class="social-btn" onclick="socialLogin('Discord')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Discord
+      </button>
+      <button class="social-btn" onclick="socialLogin('TikTok')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/></svg>
+        TikTok
+      </button>
+      <button class="social-btn shopify-btn" onclick="socialLogin('Shopify')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="#96BF48"><path d="M15.337 23.979l7.046-1.523S19.797 6.584 19.78 6.448c-.017-.135-.135-.225-.252-.225s-2.315-.158-2.315-.158-.854-.871-1.016-1.016v-.017c0 .008-.008.008-.008.008-.47-.47-1.39-.654-2.083-.51-.025.008-.05.017-.076.025-.224-.654-.619-1.258-1.31-1.258h-.068C12.27 2.623 11.77 2 10.984 2c-3.047.009-4.508 3.81-4.965 5.748-.268.008-.529.017-.789.025-1.31.04-1.31.04-1.461 1.31C3.617 10.27 2 23.055 2 23.055l13.337.924zM13.4 5.387c-.495.153-.983.306-1.478.46V5.65c0-.46-.068-.818-.185-1.115.46.06.768.563.95 1.115l.713-.263zM11.786 4.56c.11.279.185.62.185 1.106v.126l-2.332.72c.449-1.723 1.29-2.558 2.147-1.952zm-.954-.603c.135 0 .27.051.395.145-.994.468-2.054 1.648-2.503 4.006l-1.89.585c.524-1.79 1.757-4.736 3.998-4.736z"/></svg>
+        Shopify
+      </button>
+    </div>
+
+    <div class="divider">ou avec ton email</div>
+
+    <!-- Form -->
+    <div class="form-group">
+      <label for="username">Nom d'utilisateur</label>
+      <input type="text" id="username" placeholder="devmaster42" oninput="validateUsername()" />
+      <div class="field-msg" id="username-msg"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Adresse e-mail</label>
+      <input type="email" id="email" placeholder="toi@exemple.com" oninput="validateEmail()" />
+      <div class="field-msg" id="email-msg"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <div class="pw-wrap">
+        <input type="password" id="password" placeholder="Minimum 8 caractères" oninput="validatePassword()" />
+        <button class="pw-toggle" onclick="togglePw('password', this)" type="button">
+          <svg id="eye-pw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="pw-strength" id="pw-strength" style="display:none">
+        <div class="pw-bars">
+          <div class="pw-bar" id="bar1"></div>
+          <div class="pw-bar" id="bar2"></div>
+          <div class="pw-bar" id="bar3"></div>
+          <div class="pw-bar" id="bar4"></div>
+        </div>
+        <div class="pw-rules">
+          <div class="rule" id="r-len"><div class="rule-dot"></div>Entre 8 et 20 caractères</div>
+          <div class="rule" id="r-upper"><div class="rule-dot"></div>Au moins une majuscule (A-Z)</div>
+          <div class="rule" id="r-lower"><div class="rule-dot"></div>Au moins une minuscule (a-z)</div>
+          <div class="rule" id="r-special"><div class="rule-dot"></div>Au moins un caractère spécial (!@#$...)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirm">Confirmer le mot de passe</label>
+      <div class="pw-wrap">
+        <input type="password" id="confirm" placeholder="Répète ton mot de passe" oninput="validateConfirm()" />
+        <button class="pw-toggle" onclick="togglePw('confirm', this)" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="field-msg" id="confirm-msg"></div>
+    </div>
+
+    <button class="btn-submit" id="submitBtn" onclick="openCaptcha()">S'inscrire</button>
+
+    <p class="login-link">Déjà un compte ? <a href="login.html">Se connecter</a></p>
+  </div>
+</main>
+
+<!-- CAPTCHA MODAL -->
+<div class="modal-overlay" id="captchaModal">
+  <div class="modal">
+    <div id="captchaContent">
+      <h2 class="modal-title">Vérification humaine</h2>
+      <p class="modal-sub">Sélectionne les images qui correspondent à la description ci-dessous.</p>
+
+      <div class="captcha-question">
+        <div class="captcha-label" id="captchaLabel">Clique sur tous les <strong id="captchaTarget"></strong></div>
+        <div class="captcha-hint">Sélectionne les bonnes images puis clique sur Valider</div>
+        <div class="captcha-img-grid" id="captchaGrid"></div>
+      </div>
+
+      <div class="captcha-feedback" id="captchaFeedback"></div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeCaptcha()">Annuler</button>
+        <button class="btn-confirm" id="confirmBtn" onclick="verifyCaptcha()">Valider</button>
+      </div>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 class="modal-title" style="margin-bottom:0.5rem">Compte créé ! 🎉</h2>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem">Bienvenue sur DevHubX ! Redirection en cours...</p>
+      <div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden">
+        <div id="progressBar" style="height:100%;width:0%;background:var(--purple);border-radius:2px;transition:width 2s linear"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>&copy; 2026 DevHubX — Tous droits réservés</footer>
+
+<script>
+  // ── FAKE EMAIL DB ──
+  const existingEmails = ['test@devhub.com','user@gmail.com','admin@devhubx.com'];
+
+  // ── VALIDATORS ──
+  function validateUsername() {
+    const val = document.getElementById('username').value.trim();
+    const msg = document.getElementById('username-msg');
+    const inp = document.getElementById('username');
+    if (!val) { inp.className=''; msg.textContent=''; return false; }
+    if (val.length < 3) { inp.className='invalid'; msg.className='field-msg err'; msg.textContent='Minimum 3 caractères.'; return false; }
+    inp.className='valid'; msg.className='field-msg ok'; msg.textContent='✓ Nom disponible';
+    return true;
+  }
+
+  function validateEmail() {
+    const val = document.getElementById('email').value.trim();
+    const msg = document.getElementById('email-msg');
+    const inp = document.getElementById('email');
+    if (!val) { inp.className=''; msg.textContent=''; return false; }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val)) {
+      inp.className='invalid'; msg.className='field-msg err'; msg.textContent='❌ Adresse e-mail invalide.'; return false;
+    }
+    if (existingEmails.includes(val.toLowerCase())) {
+      inp.className='invalid'; msg.className='field-msg warn'; msg.textContent='⚠️ Cette adresse a déjà un compte. Connecte-toi !'; return false;
+    }
+    inp.className='valid'; msg.className='field-msg ok'; msg.textContent='✓ Adresse disponible';
+    return true;
+  }
+
+  let pwValid = false;
+  function validatePassword() {
+    const val = document.getElementById('password').value;
+    const strength = document.getElementById('pw-strength');
+    if (val.length === 0) { strength.style.display='none'; pwValid=false; return false; }
+    strength.style.display='block';
+
+    const rules = {
+      len:     val.length >= 8 && val.length <= 20,
+      upper:   /[A-Z]/.test(val),
+      lower:   /[a-z]/.test(val),
+      special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val),
+    };
+
+    setRule('r-len',     rules.len);
+    setRule('r-upper',   rules.upper);
+    setRule('r-lower',   rules.lower);
+    setRule('r-special', rules.special);
+
+    const score = Object.values(rules).filter(Boolean).length;
+    updateBars(score);
+    pwValid = score === 4;
+    if (document.getElementById('confirm').value) validateConfirm();
+    return pwValid;
+  }
+
+  function setRule(id, ok) {
+    const el = document.getElementById(id);
+    el.className = 'rule ' + (ok ? 'ok' : 'fail');
+  }
+
+  function updateBars(score) {
+    const bars = ['bar1','bar2','bar3','bar4'];
+    const cls = score <= 1 ? 'weak' : score <= 2 ? 'medium' : score <= 3 ? 'medium' : 'strong';
+    bars.forEach((b,i) => {
+      document.getElementById(b).className = 'pw-bar ' + (i < score ? cls : '');
+    });
+  }
+
+  function validateConfirm() {
+    const pw  = document.getElementById('password').value;
+    const cf  = document.getElementById('confirm').value;
+    const msg = document.getElementById('confirm-msg');
+    const inp = document.getElementById('confirm');
+    if (!cf) { inp.className=''; msg.textContent=''; return false; }
+    if (pw !== cf) { inp.className='invalid'; msg.className='field-msg err'; msg.textContent='❌ Les mots de passe ne correspondent pas.'; return false; }
+    inp.className='valid'; msg.className='field-msg ok'; msg.textContent='✓ Mots de passe identiques';
+    return true;
+  }
+
+  function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    btn.style.color = inp.type === 'text' ? 'var(--purple-light)' : 'var(--muted)';
+  }
+
+  function socialLogin(provider) {
+    alert('Connexion via ' + provider + ' — À intégrer avec l\'API ' + provider);
+  }
+
+  // ── CAPTCHA ──
+  const captchas = [
+    {
+      label: 'animaux',
+      items: [
+        { emoji: '🐶', correct: true },
+        { emoji: '🚗', correct: false },
+        { emoji: '🐱', correct: true },
+        { emoji: '🏠', correct: false },
+        { emoji: '🐸', correct: true },
+        { emoji: '✈️', correct: false },
+        { emoji: '🐧', correct: true },
+        { emoji: '🍕', correct: false },
+        { emoji: '🦊', correct: true },
+      ]
+    },
+    {
+      label: 'fruits',
+      items: [
+        { emoji: '🍎', correct: true },
+        { emoji: '🚀', correct: false },
+        { emoji: '🍌', correct: true },
+        { emoji: '🎸', correct: false },
+        { emoji: '🍇', correct: true },
+        { emoji: '🏆', correct: false },
+        { emoji: '🍓', correct: true },
+        { emoji: '🔑', correct: false },
+        { emoji: '🍑', correct: true },
+      ]
+    },
+    {
+      label: 'véhicules',
+      items: [
+        { emoji: '🚗', correct: true },
+        { emoji: '🌸', correct: false },
+        { emoji: '✈️', correct: true },
+        { emoji: '🎂', correct: false },
+        { emoji: '🚂', correct: true },
+        { emoji: '🐠', correct: false },
+        { emoji: '🚀', correct: true },
+        { emoji: '📚', correct: false },
+        { emoji: '🚢', correct: true },
+      ]
+    }
+  ];
+
+  let currentCaptcha = null;
+  let selectedIndices = new Set();
+
+  function openCaptcha() {
+    if (!validateUsername() || !validateEmail() || !validatePassword() || !validateConfirm()) {
+      validateUsername(); validateEmail(); validatePassword(); validateConfirm();
+      return;
+    }
+    currentCaptcha = captchas[Math.floor(Math.random() * captchas.length)];
+    selectedIndices = new Set();
+    document.getElementById('captchaTarget').textContent = currentCaptcha.label;
+    document.getElementById('captchaFeedback').textContent = '';
+    document.getElementById('captchaFeedback').className = 'captcha-feedback';
+    renderCaptchaGrid();
+    document.getElementById('captchaModal').classList.add('active');
+    document.getElementById('captchaContent').style.display = 'block';
+    document.getElementById('successScreen').style.display = 'none';
+  }
+
+  function renderCaptchaGrid() {
+    const grid = document.getElementById('captchaGrid');
+    grid.innerHTML = '';
+    currentCaptcha.items.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'captcha-img';
+      div.textContent = item.emoji;
+      div.onclick = () => toggleCaptchaItem(i, div);
+      grid.appendChild(div);
+    });
+  }
+
+  function toggleCaptchaItem(i, el) {
+    if (selectedIndices.has(i)) {
+      selectedIndices.delete(i);
+      el.className = 'captcha-img';
+    } else {
+      selectedIndices.add(i);
+      el.className = 'captcha-img selected';
+    }
+  }
+
+  function verifyCaptcha() {
+    const correctIndices = new Set(
+      currentCaptcha.items.map((item, i) => item.correct ? i : -1).filter(i => i !== -1)
+    );
+    const grid = document.getElementById('captchaGrid').children;
+    let allCorrect = true;
+
+    correctIndices.forEach(i => {
+      if (!selectedIndices.has(i)) allCorrect = false;
+      grid[i].className = 'captcha-img correct';
+    });
+
+    selectedIndices.forEach(i => {
+      if (!correctIndices.has(i)) { allCorrect = false; grid[i].className = 'captcha-img wrong'; }
+    });
+
+    const fb = document.getElementById('captchaFeedback');
+    if (allCorrect && selectedIndices.size === correctIndices.size) {
+      fb.textContent = '✓ Vérification réussie !';
+      fb.className = 'captcha-feedback ok';
+      setTimeout(showSuccess, 800);
+    } else {
+      fb.textContent = '❌ Mauvaise sélection. Réessaie !';
+      fb.className = 'captcha-feedback err';
+      setTimeout(() => {
+        selectedIndices = new Set();
+        renderCaptchaGrid();
+        fb.textContent = '';
+        fb.className = 'captcha-feedback';
+      }, 1500);
+    }
+  }
+
+  function showSuccess() {
+    document.getElementById('captchaContent').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('progressBar').style.width = '100%';
+    }, 100);
+    setTimeout(() => {
+      closeCaptcha();
+    }, 2500);
+  }
+
+  function closeCaptcha() {
+    document.getElementById('captchaModal').classList.remove('active');
+  }
+</script>
+
+</body>
+</html>
