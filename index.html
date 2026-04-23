@@ -111,6 +111,48 @@
 
     .search-btn:hover { background: rgba(124, 58, 237, 0.25); color: var(--text); }
 
+    /* ── PROFILE AVATAR ── */
+    .profile-wrap { position: relative; }
+
+    .avatar-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      border: 2px solid rgba(168,85,247,0.5);
+      color: #fff; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-family: 'Syne', sans-serif; letter-spacing: 0.02em;
+    }
+    .avatar-btn:hover { transform: scale(1.08); box-shadow: 0 0 14px rgba(168,85,247,0.5); }
+
+    .profile-dropdown {
+      display: none; position: absolute; top: calc(100% + 10px); right: 0;
+      background: #111122; border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 12px; min-width: 180px; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5); z-index: 200;
+      animation: dropIn 0.2s ease both;
+    }
+    .profile-dropdown.open { display: block; }
+    @keyframes dropIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+
+    .dropdown-header {
+      padding: 0.9rem 1rem 0.7rem;
+      border-bottom: 1px solid rgba(124,58,237,0.15);
+    }
+    .dropdown-username { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+    .dropdown-email    { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+    .dropdown-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.7rem 1rem; font-size: 0.88rem; color: var(--muted);
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+      border: none; background: none; width: 100%; text-align: left;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .dropdown-item:hover { background: rgba(124,58,237,0.1); color: var(--text); }
+    .dropdown-item.logout { color: #ef4444; }
+    .dropdown-item.logout:hover { background: rgba(239,68,68,0.08); color: #ef4444; }
+
     /* ── HERO ── */
     .hero {
       min-height: calc(100vh - 65px);
@@ -338,8 +380,8 @@
       <a href="#">À propos</a>
       <a href="#">Services</a>
       <a href="#">Projets</a>
-      <a href="register.html">S'inscrire</a>
-      <a href="login.html">Connexion</a>
+      <a href="#">S'inscrire</a>
+      <a href="#">Connexion</a>
     </nav>
 
     <div class="header-right">
