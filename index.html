@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevHub — Marketplace pour développeurs</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #1a1a2e;
+      border-bottom: 1px solid #333;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #7c83fd;
+    }
+
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    nav a:hover { color: #7c83fd; }
+
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #aaa;
+      margin-bottom: 2rem;
+    }
+
+    .hero button {
+      background: #7c83fd;
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .hero button:hover { background: #5c63d8; }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 3rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #1e1e2e;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 250px;
+      text-align: center;
+    }
+
+    .card h3 { color: #7c83fd; margin-bottom: 0.5rem; }
+    .card p  { color: #aaa; font-size: 0.9rem; }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid #222;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>DevHub</h1>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Explorer</a>
+      <a href="#">Vendre</a>
+      <a href="#">Connexion</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>La marketplace des développeurs</h2>
+    <p>Achète et vends des scripts, templates, outils et plugins.</p>
+    <button>Explorer les produits</button>
+  </section>
+
+  <section class="cards">
+    <div class="card">
+      <h3>Scripts</h3>
+      <p>Automatise tes tâches avec des scripts prêts à l'emploi.</p>
+    </div>
+    <div class="card">
+      <h3>Templates</h3>
+      <p>Démarre ton projet avec des templates professionnels.</p>
+    </div>
+    <div class="card">
+      <h3>Plugins</h3>
+      <p>Étends tes outils avec des plugins puissants.</p>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 DevHub — Tous droits réservés
+  </footer>
+
+</body>
+</html>
