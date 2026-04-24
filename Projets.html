@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projets — DevHubX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --purple: #7c3aed; --purple-light: #a855f7;
+      --border: rgba(124,58,237,0.25);
+      --bg: #080810; --card: #111122;
+      --text: #f0f0ff; --muted: #8888aa;
+      --success: #22c55e; --error: #ef4444;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* HEADER */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem; background: rgba(8,8,16,0.9);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; }
+    .logo-text { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); }
+    .logo-text span { color: var(--purple-light); }
+    nav { display: flex; align-items: center; gap: 0.25rem; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.92rem; font-weight: 500; padding: 0.4rem 0.9rem; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+    nav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    nav a.active { color: var(--purple-light); border-bottom: 2px solid var(--purple-light); border-radius: 0; }
+
+    /* MAIN */
+    main { flex: 1; padding: 3rem 1.5rem; max-width: 780px; margin: 0 auto; width: 100%; }
+
+    /* INTRO */
+    .intro-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3rem 2rem; text-align: center;
+      animation: fadeUp 0.5s ease both;
+    }
+    .intro-icon { font-size: 3.5rem; margin-bottom: 1.2rem; }
+    .intro-title { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.6rem; }
+    .intro-title span { color: var(--purple-light); }
+    .intro-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .intro-badges { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .badge { background: rgba(124,58,237,0.12); border: 1px solid var(--border); color: var(--purple-light); font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.9rem; border-radius: 20px; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    /* PROGRESS */
+    .progress-wrap { margin-bottom: 1.8rem; }
+    .progress-top { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    .progress-label { font-size: 0.82rem; color: var(--muted); }
+    .progress-count { font-size: 0.82rem; font-weight: 700; color: var(--purple-light); }
+    .progress-bar { height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--purple-light)); border-radius: 3px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+    /* QUESTION CARD */
+    .q-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.2rem 2rem 1.8rem;
+      animation: fadeUp 0.3s ease both;
+    }
+    .q-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(124,58,237,0.12); border: 1px solid var(--border); color: var(--purple-light); font-size: 0.75rem; font-weight: 700; padding: 0.28rem 0.8rem; border-radius: 20px; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .q-text { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; line-height: 1.4; margin-bottom: 1.5rem; }
+
+    textarea {
+      width: 100%; min-height: 120px; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.9rem 1rem; color: var(--text);
+      font-size: 0.93rem; font-family: 'DM Sans', sans-serif;
+      resize: vertical; outline: none; line-height: 1.6;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    textarea:focus { border-color: var(--purple-light); background: rgba(124,58,237,0.05); }
+    textarea::placeholder { color: var(--muted); }
+    textarea.shake { animation: shake 0.4s ease; border-color: var(--error); }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+    .char-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.4rem; }
+    .char-count { font-size: 0.75rem; color: var(--muted); }
+    .skip-btn { font-size: 0.75rem; color: var(--muted); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: underline; }
+    .skip-btn:hover { color: var(--text); }
+
+    .q-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; gap: 1rem; }
+    .btn-prev {
+      background: transparent; border: 1px solid var(--border); color: var(--muted);
+      padding: 0.7rem 1.4rem; border-radius: 10px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-prev:hover:not(:disabled) { background: rgba(255,255,255,0.05); color: var(--text); }
+    .btn-prev:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-next {
+      background: var(--purple); border: none; color: #fff;
+      padding: 0.7rem 1.8rem; border-radius: 10px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+      transition: background 0.2s, transform 0.15s;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-next:hover { background: #6d28d9; transform: translateY(-1px); }
+
+    /* LOADING */
+    .loading-screen {
+      display: none; text-align: center; padding: 3rem 1rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; animation: fadeUp 0.4s ease both;
+    }
+    .spinner {
+      width: 56px; height: 56px;
+      border: 3px solid rgba(124,58,237,0.2);
+      border-top-color: var(--purple-light);
+      border-radius: 50%; margin: 0 auto 1.4rem;
+      animation: spin 0.85s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-title { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .loading-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.8rem; }
+    .loading-steps { display: flex; flex-direction: column; gap: 0.55rem; text-align: left; max-width: 320px; margin: 0 auto; }
+    .lstep { display: flex; align-items: center; gap: 0.6rem; font-size: 0.83rem; color: var(--muted); opacity: 0; animation: fadeIn 0.4s ease forwards; }
+    .lstep .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--purple-light); flex-shrink: 0; }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* RESULTS */
+    .results-screen { display: none; }
+    .results-hero {
+      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(168,85,247,0.06));
+      border: 1px solid rgba(124,58,237,0.35); border-radius: 20px;
+      padding: 2.2rem; text-align: center; margin-bottom: 1.5rem;
+      animation: fadeUp 0.4s ease both;
+    }
+    .results-icon { font-size: 2.8rem; margin-bottom: 0.8rem; }
+    .results-title { font-family: 'Syne', sans-serif; font-size: 1.7rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .results-title span { color: var(--purple-light); }
+    .results-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+    .section-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--purple-light);
+      margin: 2rem 0 0.9rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .reco-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.2rem 1.4rem; margin-bottom: 0.7rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      animation: fadeUp 0.4s ease both;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .reco-card:hover { border-color: rgba(124,58,237,0.5); transform: translateX(4px); }
+    .reco-num {
+      min-width: 32px; height: 32px; background: rgba(124,58,237,0.15);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: var(--purple-light); flex-shrink: 0;
+    }
+    .reco-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .reco-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+    .ai-block {
+      background: var(--card); border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 16px; padding: 1.6rem; margin-bottom: 0.8rem;
+      animation: fadeUp 0.4s ease both;
+    }
+    .ai-block-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--purple-light); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .ai-row { display: flex; gap: 0.7rem; align-items: flex-start; margin-bottom: 0.75rem; font-size: 0.87rem; line-height: 1.6; }
+    .ai-tag {
+      background: rgba(124,58,237,0.18); color: var(--purple-light);
+      font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+      flex-shrink: 0; margin-top: 2px; white-space: nowrap; letter-spacing: 0.03em;
+    }
+    .ai-tag.green  { background: rgba(34,197,94,0.12); color: #4ade80; }
+    .ai-tag.yellow { background: rgba(245,158,11,0.12); color: #fbbf24; }
+
+    .btn-restart {
+      width: 100%; background: var(--purple); color: #fff; border: none;
+      padding: 0.95rem; font-size: 0.97rem; font-weight: 600; border-radius: 12px;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s, transform 0.15s; margin-top: 1.8rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-restart:hover { background: #6d28d9; transform: translateY(-1px); }
+
+    /* START BTN */
+    .btn-start {
+      background: var(--purple); color: #fff; border: none;
+      padding: 0.9rem 2.5rem; font-size: 1rem; font-weight: 600;
+      border-radius: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 0.6rem;
+    }
+    .btn-start:hover { background: #6d28d9; transform: translateY(-2px); }
+
+    footer { text-align: center; padding: 1.5rem; color: #444466; font-size: 0.82rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+
+    @media (max-width: 600px) {
+      header { padding: 1rem 1.25rem; } nav { display: none; }
+      main { padding: 1.5rem 1rem; } .q-text { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">
+    <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+      <rect width="38" height="38" rx="8" fill="rgba(124,58,237,0.15)"/>
+      <text x="5" y="27" font-family="Syne,sans-serif" font-weight="800" font-size="18" fill="#a855f7">D</text>
+      <text x="20" y="27" font-family="Syne,sans-serif" font-weight="800" font-size="13" fill="#ffffff">H</text>
+    </svg>
+    <span class="logo-text">DevHub<span>X</span></span>
+  </a>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="#">À propos</a>
+    <a href="#">Services</a>
+    <a href="projets.html" class="active">Projets</a>
+    <a href="register.html">S'inscrire</a>
+    <a href="login.html">Connexion</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <div id="introScreen">
+    <div class="intro-card">
+      <div class="intro-icon">🚀</div>
+      <h1 class="intro-title">Analyse ton <span>Projet Business</span></h1>
+      <p class="intro-sub">Réponds à 30 questions sur ton projet. Notre IA analyse tes réponses et génère un plan d'action personnalisé avec les meilleures recommandations business, outils et IA pour réussir.</p>
+      <div class="intro-badges">
+        <span class="badge">📋 30 questions</span>
+        <span class="badge">⏱️ ~10 minutes</span>
+        <span class="badge">🤖 Analyse IA</span>
+        <span class="badge">💡 10 recommandations</span>
+      </div>
+      <button class="btn-start" onclick="startQuiz()">
+        Commencer l'analyse
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quizScreen" style="display:none">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Progression de l'analyse</span>
+        <span class="progress-count" id="progressCount">1 / 30</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:3.33%"></div></div>
+    </div>
+
+    <div class="q-card" id="qCard">
+      <div class="q-badge">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        <span id="qBadge">Question 1 sur 30</span>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <textarea id="qAnswer" placeholder="Écris ta réponse ici..." maxlength="600" oninput="onType()"></textarea>
+      <div class="char-row">
+        <span class="char-count" id="charCount">0 / 600</span>
+        <button class="skip-btn" onclick="skipQ()">Passer cette question →</button>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" id="prevBtn" onclick="prevQ()" disabled>← Précédent</button>
+        <button class="btn-next" id="nextBtn" onclick="nextQ()">
+          <span id="nextLabel">Suivant</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="spinner"></div>
+    <div class="loading-title">Analyse en cours...</div>
+    <div class="loading-sub">Notre IA examine tes 30 réponses pour générer ton plan personnalisé</div>
+    <div class="loading-steps" id="loadingSteps"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-screen" id="resultsScreen">
+    <div class="results-hero">
+      <div class="results-icon">🎯</div>
+      <div class="results-title">Ton analyse <span>est prête !</span></div>
+      <div class="results-sub" id="resultsSub"></div>
+    </div>
+
+    <div class="section-title">10 Recommandations personnalisées</div>
+    <div id="recoList"></div>
+
+    <div class="section-title">Recommandations IA pour le codage</div>
+    <div id="aiCodingBlock"></div>
+
+    <div class="section-title">Créer ton application ou site web</div>
+    <div id="aiAppBlock"></div>
+
+    <div class="section-title">Outils essentiels pour ton projet</div>
+    <div id="aiToolsBlock"></div>
+
+    <button class="btn-restart" onclick="restart()">
+      🔄 Recommencer l'analyse
+    </button>
+  </div>
+
+</main>
+
+<footer>&copy; 2026 DevHubX — Tous droits réservés</footer>
+
+<script>
+const questions = [
+  "Quel est votre projet ? Décrivez-le en quelques phrases.",
+  "Que voulez-vous faire plus tard avec ce projet ?",
+  "Voulez-vous lancer une marque ? Si oui, dans quel domaine ?",
+  "Qui est votre client idéal ? (âge, profession, besoins, centres d'intérêt)",
+  "Quel problème précis votre projet résout-il pour vos clients ?",
+  "Avez-vous déjà des concurrents directs ? Citez-en quelques-uns.",
+  "Qu'est-ce qui vous différencie de vos concurrents ? Votre avantage unique ?",
+  "Quel est votre modèle économique ? (vente directe, abonnement, commission, publicité...)",
+  "Proposez-vous un produit physique, numérique, ou un service ?",
+  "Avez-vous un budget de départ ? Si oui, donnez une fourchette approximative.",
+  "Travaillerez-vous seul ou avec une équipe ? Décrivez la composition.",
+  "Quelles compétences possédez-vous déjà ? (technique, marketing, vente, design...)",
+  "Avez-vous déjà validé votre idée auprès de potentiels clients ? Comment ?",
+  "Dans combien de temps souhaitez-vous lancer votre projet ?",
+  "Sur quelles plateformes voulez-vous être présent ? (web, mobile, réseaux sociaux...)",
+  "Avez-vous besoin d'un site web, d'une application mobile, ou des deux ?",
+  "Avez-vous déjà un nom ou une identité visuelle pour votre projet ?",
+  "Comment prévoyez-vous d'acquérir vos premiers clients ?",
+  "Quelle est votre stratégie de communication et de marketing ?",
+  "Voulez-vous vendre localement, nationalement ou à l'international ?",
+  "Quels sont les 3 plus grands défis que vous anticipez pour votre projet ?",
+  "Comment allez-vous fixer vos prix ? Quelle est votre politique tarifaire ?",
+  "Avez-vous prévu un système de fidélisation pour vos clients ?",
+  "Comment allez-vous gérer le service client et le support ?",
+  "Avez-vous des partenariats ou des collaborations en vue ?",
+  "Quelle est votre vision à 5 ans pour ce projet ?",
+  "Êtes-vous prêt à vous former sur de nouvelles compétences si nécessaire ?",
+  "Avez-vous des revenus actuels qui peuvent financer le démarrage du projet ?",
+  "Qu'est-ce qui vous motive le plus dans ce projet ? Pourquoi lui et pas un autre ?",
+  "Y a-t-il quelque chose d'important sur votre projet que vous souhaitez ajouter ?"
+];
+
+let current = 0;
+let answers = new Array(30).fill('');
+
+function startQuiz() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  renderQ();
+}
+
+function renderQ() {
+  // Re-animate card
+  const card = document.getElementById('qCard');
+  card.style.animation = 'none'; void card.offsetWidth;
+  card.style.animation = 'fadeUp 0.3s ease both';
+
+  document.getElementById('qBadge').textContent    = 'Question ' + (current+1) + ' sur 30';
+  document.getElementById('qText').textContent     = questions[current];
+  document.getElementById('qAnswer').value         = answers[current];
+  document.getElementById('progressCount').textContent = (current+1) + ' / 30';
+  document.getElementById('progressFill').style.width  = (((current+1)/30)*100) + '%';
+  document.getElementById('prevBtn').disabled      = current === 0;
+  document.getElementById('nextLabel').textContent = current === 29 ? 'Analyser mes réponses ✨' : 'Suivant';
+  document.getElementById('charCount').textContent = answers[current].length + ' / 600';
+}
+
+function onType() {
+  const val = document.getElementById('qAnswer').value;
+  answers[current] = val;
+  document.getElementById('charCount').textContent = val.length + ' / 600';
+}
+
+function nextQ() {
+  const val = document.getElementById('qAnswer').value.trim();
+  if (!val) {
+    const ta = document.getElementById('qAnswer');
+    ta.classList.add('shake');
+    ta.placeholder = '⚠️ Merci de répondre avant de continuer...';
+    setTimeout(() => { ta.classList.remove('shake'); ta.placeholder = 'Écris ta réponse ici...'; }, 1500);
+    return;
+  }
+  answers[current] = val;
+  if (current === 29) { startAnalysis(); return; }
+  current++;
+  renderQ();
+}
+
+function prevQ() {
+  if (current > 0) { current--; renderQ(); }
+}
+
+function skipQ() {
+  answers[current] = answers[current] || 'Non renseigné';
+  if (current === 29) { startAnalysis(); return; }
+  current++;
+  renderQ();
+}
+
+// ── ANALYSIS ──
+function startAnalysis() {
+  document.getElementById('quizScreen').style.display = 'none';
+  const ls = document.getElementById('loadingScreen');
+  ls.style.display = 'block';
+
+  const steps = [
+    'Lecture et compréhension de tes 30 réponses...',
+    'Identification de ton profil entrepreneur...',
+    'Analyse de ton marché et de ta cible...',
+    'Évaluation de la faisabilité et des risques...',
+    'Génération des recommandations business...',
+    'Sélection des meilleures IA pour ton projet...',
+    'Choix des outils et technologies adaptés...',
+    'Finalisation de ton rapport personnalisé...',
+  ];
+
+  const container = document.getElementById('loadingSteps');
+  container.innerHTML = '';
+  steps.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'lstep';
+    div.style.animationDelay = (i * 0.55) + 's';
+    div.innerHTML = '<div class="dot"></div>' + s;
+    container.appendChild(div);
+  });
+
+  setTimeout(showResults, steps.length * 550 + 600);
+}
+
+function showResults() {
+  document.getElementById('loadingScreen').style.display = 'none';
+  document.getElementById('resultsScreen').style.display = 'block';
+
+  const a = answers;
+  const projet   = (a[0] || 'votre projet').substring(0, 60);
+  const wantsApp = a[15] && (a[15].toLowerCase().includes('app') || a[15].toLowerCase().includes('mobile'));
+  const wantsSite= a[15] && a[15].toLowerCase().includes('site');
+  const hasBudget= a[9]  && a[9].match(/\d+/);
+  const hasTeam  = a[10] && a[10].toLowerCase().includes('équipe');
+  const isIntl   = a[19] && a[19].toLowerCase().includes('intern');
+  const wantsBrand= a[2] && a[2].toLowerCase().includes('oui');
+  const hasCompet = a[5] && a[5].trim().length > 8 && !a[5].toLowerCase().includes('non');
+  const digital   = a[8] && a[8].toLowerCase().includes('num');
+  const physical  = a[8] && a[8].toLowerCase().includes('physi');
+
+  document.getElementById('resultsSub').textContent =
+    'Basé sur tes réponses, voici ton plan d\'action personnalisé pour : "' + projet + (projet.length>=60?'...':'"');
+
+  // ── 10 RECOMMANDATIONS ──
+  const recos = [
+    {
+      title: "Valide ton idée avant d'investir",
+      desc: `Avant de dépenser un seul euro en développement, crée une landing page simple et collecte 20 à 50 emails de personnes intéressées. Si les gens s'inscrivent, ton idée a du potentiel. Utilise des outils gratuits comme Carrd ou GitHub Pages pour tester rapidement.`
+    },
+    {
+      title: wantsBrand ? "Construis une identité de marque mémorable" : "Définis ton positionnement unique",
+      desc: wantsBrand
+        ? `Pour ta marque, crée un logo avec Canva ou Looka, choisis 2 couleurs et une typographie. La cohérence visuelle sur tous tes supports (site, réseaux, emails) inspire confiance et professionnalisme dès le premier regard.`
+        : `Formule ta proposition de valeur en une phrase claire. Exemple : "Je aide [cible] à [résoudre problème] grâce à [solution]". Cette clarté te permettra de mieux te vendre et d'attirer les bons clients.`
+    },
+    {
+      title: "Identifie et contacte tes 10 premiers clients",
+      desc: `Tes 10 premiers clients sont les plus importants. Cherche-les dans ton entourage, sur LinkedIn, dans des groupes Facebook ou Discord. Offre-leur un accès gratuit ou une réduction en échange de feedback détaillé. Leurs retours vont façonner ton produit.`
+    },
+    {
+      title: hasBudget ? "Alloue ton budget avec méthode" : "Lance-toi avec un budget zéro",
+      desc: hasBudget
+        ? `Répartis ton budget en 4 : 40% produit & développement, 30% marketing & acquisition, 20% outils & logiciels, 10% réserve d'urgence. N'investis massivement que quand tu as validé qu'un client est prêt à payer.`
+        : `Tu peux démarrer gratuitement avec GitHub Pages (site), Canva (design), Notion (organisation), Brevo (emails), Google Analytics (stats). Réinvestis tes premiers revenus pour scaler progressivement.`
+    },
+    {
+      title: "Crée un tunnel de conversion simple",
+      desc: `Met en place un tunnel de vente en 3 étapes : 1. Une page d'atterrissage claire avec une seule action (s'inscrire ou acheter), 2. Un email de bienvenue automatique avec une valeur immédiate, 3. Une offre payante bien présentée. La simplicité convertit mieux que la complexité.`
+    },
+    {
+      title: hasCompet ? "Transforme tes concurrents en opportunité" : "Surveille l'émergence de la concurrence",
+      desc: hasCompet
+        ? `Lis les avis négatifs de tes concurrents sur Trustpilot, Google, App Store. Ce que leurs clients détestent, c'est exactement ce que tu dois mieux faire. C'est là que se trouve ton avantage concurrentiel réel.`
+        : `Un marché sans concurrence peut signifier qu'il n'y a pas de demande. Configure des alertes Google sur les mots-clés de ton secteur et surveille les nouveaux entrants. Être pionnier est une chance, mais sois prêt à éduquer ton marché.`
+    },
+    {
+      title: "Automatise les tâches répétitives dès le début",
+      desc: `Identifie les 3 tâches que tu fais chaque semaine et automatise-les avec Make (ex-Integromat) ou Zapier. Par exemple : envoyer un email quand quelqu'un s'inscrit, publier automatiquement sur les réseaux, générer des rapports. Chaque heure économisée = une heure de croissance.`
+    },
+    {
+      title: isIntl ? "Prépare ton projet pour l'international" : "Domine ton marché local avant de t'étendre",
+      desc: isIntl
+        ? `Pour l'international : prévois un site multilingue dès le départ (i18n avec Next.js), utilise Stripe pour les paiements multi-devises, respecte le RGPD pour l'Europe et le CCPA pour les USA. Commence par 1 ou 2 marchés cibles avant de t'étaler partout.`
+        : `Commence par devenir la référence dans ta ville ou ta région. Les success stories locales sont plus faciles à construire, les bouches-à-oreille plus puissants, et les premières ventes plus rapides. L'expansion nationale et internationale viendra ensuite naturellement.`
+    },
+    {
+      title: "Mesure tout avec des indicateurs clés (KPIs)",
+      desc: `Définis dès maintenant tes 5 métriques essentielles : taux de conversion (visiteurs → clients), coût d'acquisition client (CAC), valeur vie client (LTV), taux de rétention à 30 jours, et revenu mensuel récurrent (MRR). Ce que tu mesures, tu peux l'améliorer.`
+    },
+    {
+      title: "Construis une communauté autour de ton projet",
+      desc: `Une communauté active est ton meilleur canal marketing et le moins cher. Crée un serveur Discord ou un groupe privé, publie du contenu éducatif régulièrement, engage tes membres dans les décisions produit. Les communautés fidèles réduisent ton coût d'acquisition de 60% en moyenne.`
+    }
+  ];
+
+  const recoList = document.getElementById('recoList');
+  recoList.innerHTML = '';
+  recos.forEach((r, i) => {
+    const d = document.createElement('div');
+    d.className = 'reco-card';
+    d.style.animationDelay = (i * 0.07) + 's';
+    d.innerHTML = `<div class="reco-num">${i+1}</div>
+      <div><div class="reco-title">${r.title}</div><div class="reco-desc">${r.desc}</div></div>`;
+    recoList.appendChild(d);
+  });
+
+  // ── IA POUR LE CODAGE ──
+  document.getElementById('aiCodingBlock').innerHTML = `
+  <div class="ai-block">
+    <div class="ai-block-title">🤖 Quelle IA utiliser pour coder ton projet ?</div>
+    <div class="ai-row"><span class="ai-tag">N°1 RECOMMANDÉ</span><div><strong>Claude (Anthropic)</strong> — Le meilleur pour générer du code propre, comprendre des architectures complexes et corriger des bugs difficiles. Idéal pour les projets full-stack. Utilise <strong>Claude Code</strong> directement dans ton terminal pour une intégration maximale dans ton workflow.</div></div>
+    <div class="ai-row"><span class="ai-tag">N°2</span><div><strong>GitHub Copilot</strong> — S'intègre directement dans VS Code et JetBrains. Autocomplétion intelligente en temps réel, génération de fonctions entières et suggestion de tests. Indispensable si tu codes tous les jours.</div></div>
+    <div class="ai-row"><span class="ai-tag">N°3</span><div><strong>Cursor</strong> — Un éditeur de code entièrement propulsé par IA. Il comprend toute ta codebase et peut modifier plusieurs fichiers simultanément selon tes instructions en langage naturel. Très puissant pour les gros projets.</div></div>
+    <div class="ai-row"><span class="ai-tag green">DESIGN</span><div><strong>v0 by Vercel</strong> — Génère des interfaces React/Tailwind complètes et professionnelles depuis une simple description. Parfait pour créer rapidement des prototypes visuels de haute qualité.</div></div>
+    <div class="ai-row"><span class="ai-tag yellow">DÉBUTANT</span><div><strong>Bolt.new</strong> — Crée une application complète en quelques minutes en décrivant ce que tu veux. Aucune configuration requise, idéal pour tester une idée rapidement sans savoir coder.</div></div>
+  </div>`;
+
+  // ── APP OU SITE ──
+  document.getElementById('aiAppBlock').innerHTML = `
+  <div class="ai-block">
+    <div class="ai-block-title">${wantsApp ? '📱 Pour créer ton application mobile' : '🌐 Pour créer ton site web'}</div>
+    ${wantsApp ? `
+    <div class="ai-row"><span class="ai-tag">RECOMMANDÉ</span><div><strong>React Native</strong> — Un seul code JavaScript pour iOS et Android. Grande communauté, nombreuses librairies, déploiement sur App Store et Google Play. Recommandé si tu as des bases en JavaScript/React.</div></div>
+    <div class="ai-row"><span class="ai-tag">PERFORMANT</span><div><strong>Flutter (Dart)</strong> — Performances natives excellentes sur les deux plateformes. Interface très soignée et fluide. Idéal si l'expérience utilisateur est au cœur de ton produit.</div></div>
+    <div class="ai-row"><span class="ai-tag green">NO-CODE</span><div><strong>FlutterFlow</strong> — Crée ton app mobile par glisser-déposer, sans coder. Génère du vrai code Flutter exportable. Parfait pour valider ton MVP avant d'investir dans le développement complet.</div></div>
+    <div class="ai-row"><span class="ai-tag yellow">BACKEND</span><div><strong>Supabase</strong> — Base de données PostgreSQL, authentification, API REST et temps réel en quelques minutes. Gratuit pour démarrer, scalable pour grandir. La meilleure alternative à Firebase.</div></div>
+    <div class="ai-row"><span class="ai-tag">DÉPLOIEMENT</span><div><strong>Expo + EAS</strong> — Simplifie le déploiement de ton app React Native sur les stores. Mises à jour sans republier sur les stores, tests faciles sur appareils réels.</div></div>
+    ` : `
+    <div class="ai-row"><span class="ai-tag">GRATUIT</span><div><strong>GitHub Pages</strong> — Héberge ton site HTML/CSS/JS gratuitement directement depuis ton repo GitHub. Parfait pour une vitrine ou une landing page simple. HTTPS inclus automatiquement.</div></div>
+    <div class="ai-row"><span class="ai-tag">RECOMMANDÉ</span><div><strong>Next.js + Vercel</strong> — Le standard moderne pour les sites web professionnels. SEO optimisé, ultra-rapide, déployable gratuitement sur Vercel en 1 clic. Idéal pour une marketplace comme DevHubX.</div></div>
+    <div class="ai-row"><span class="ai-tag green">NO-CODE</span><div><strong>Webflow</strong> — Design de niveau professionnel sans écrire une ligne de code. Génère du HTML/CSS propre, animations avancées, CMS intégré. Idéal pour les sites vitrines et portfolios.</div></div>
+    <div class="ai-row"><span class="ai-tag yellow">E-COMMERCE</span><div><strong>Shopify</strong> — Si tu vends des produits, c'est la référence mondiale. Paiements sécurisés, gestion des stocks, centaines d'intégrations. Tu peux démarrer en moins d'une journée.</div></div>
+    <div class="ai-row"><span class="ai-tag">BACKEND</span><div><strong>Supabase ou Firebase</strong> — Pour ajouter une base de données, une authentification et une API à ton site en quelques minutes. Gratuit pour commencer.</div></div>
+    `}
+  </div>`;
+
+  // ── OUTILS ──
+  document.getElementById('aiToolsBlock').innerHTML = `
+  <div class="ai-block">
+    <div class="ai-block-title">🛠️ Stack d'outils essentiels pour réussir</div>
+    <div class="ai-row"><span class="ai-tag">DESIGN</span><div><strong>Figma</strong> — Maquette ton interface avant de coder. Partage facilement avec des développeurs. La version gratuite est très complète pour démarrer.</div></div>
+    <div class="ai-row"><span class="ai-tag">ORGANISATION</span><div><strong>Notion</strong> — Centralise ta roadmap, tes notes, ta documentation et tes tâches en un seul endroit. Idéal pour solo entrepreneur ou petite équipe.</div></div>
+    <div class="ai-row"><span class="ai-tag green">MARKETING</span><div><strong>Brevo (ex-Sendinblue)</strong> — Emails marketing, SMS et automatisation. 300 emails/jour gratuits. Parfait pour démarrer ta newsletter et tes campagnes d'acquisition.</div></div>
+    <div class="ai-row"><span class="ai-tag">ANALYTICS</span><div><strong>Plausible Analytics</strong> — Suivi de tes visiteurs simple, rapide et respectueux de la vie privée. Pas besoin de bannière cookies. Dashboard clair et intuitif.</div></div>
+    <div class="ai-row"><span class="ai-tag yellow">PAIEMENTS</span><div><strong>Stripe</strong> — Le standard mondial pour les paiements en ligne. API excellente, dashboard clair, accepte 135+ devises. Idéal pour vendre des produits ou des abonnements.</div></div>
+    <div class="ai-row"><span class="ai-tag">AUTOMATISATION</span><div><strong>Make (ex-Integromat)</strong> — Connecte tes applications entre elles et automatise tes workflows sans coder. Plus puissant que Zapier pour les scénarios complexes.</div></div>
+    <div class="ai-row"><span class="ai-tag green">SUPPORT</span><div><strong>Crisp Chat</strong> — Chat en direct sur ton site, base de connaissances, chatbot. Plan gratuit très généreux. Améliore considérablement la conversion et la satisfaction client.</div></div>
+  </div>`;
+}
+
+function restart() {
+  current = 0;
+  answers = new Array(30).fill('');
+  document.getElementById('resultsScreen').style.display = 'none';
+  document.getElementById('introScreen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
